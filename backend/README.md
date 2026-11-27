@@ -1,58 +1,298 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Pinoy HomeDream Finder – Backend
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Overview
 
-## About Laravel
+The backend of **Pinoy HomeDream Finder** is a REST API built with Laravel. It manages property listings, locations, property types, property comparisons, admin authentication, and property price estimation.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The system also integrates a Python Flask machine learning service that uses a trained model to estimate property prices based on property characteristics.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Technologies Used
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP
+- Laravel
+- MySQL / MariaDB
+- Laravel Sanctum
+- Python
+- Flask
+- Scikit-learn
+- Pandas
+- NumPy
+- Joblib
 
-## Learning Laravel
+## Project Structure
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```text
+backend/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   └── Resources/
+│   ├── Models/
+│   └── Providers/
+├── bootstrap/
+├── config/
+├── database/
+│   ├── migrations/
+│   └── seeders/
+├── routes/
+│   └── api.php
+├── storage/
+├── .env.example
+└── composer.json
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+ml-service/
+├── models/
+│   └── phil_price_model.pkl
+├── app.py
+├── requirements.txt
+└── README.md
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Requirements
 
-## Contributing
+Before running the backend, install:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- PHP
+- Composer
+- MySQL or MariaDB (XAMPP)
+- Python
+- pip
 
-## Code of Conduct
+## Installation and Setup
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 1. Clone the repository
 
-## Security Vulnerabilities
+```bash
+git clone https://github.com/CodeChrisGit/app-dev-project-cs-3-1.git
+cd app-dev-project-cs-3-1
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 2. Install Laravel dependencies
 
-## License
+```bash
+cd backend
+composer install
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 3. Configure environment
+
+Copy `.env.example` to `.env` and configure the database:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=pinoy_dreamhome
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+Add the ML service URL:
+
+```env
+ML_SERVICE_URL=http://127.0.0.1:5000
+```
+
+Generate the application key:
+
+```bash
+php artisan key:generate
+```
+
+### 4. Create the database
+
+Create a MySQL database named:
+
+```text
+pinoy_dreamhome
+```
+
+Make sure MySQL is running before proceeding.
+
+### 5. Run migrations and seeders
+
+```bash
+php artisan migrate --seed
+```
+
+### 6. Create the storage link
+
+```bash
+php artisan storage:link
+```
+
+### 7. Start the Laravel API
+
+```bash
+php artisan serve
+```
+
+The backend API will be available at:
+
+```text
+http://127.0.0.1:8000
+```
+
+## Machine Learning Service Setup
+
+The price estimator uses an existing trained machine learning model.
+
+### 1. Open the ML service folder
+
+From the project root:
+
+```bash
+cd ml-service
+```
+
+### 2. Create a virtual environment
+
+```bash
+python -m venv .venv
+```
+
+### 3. Activate the environment (Windows PowerShell)
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+### 4. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 5. Start the Flask service
+
+```bash
+python app.py
+```
+
+The ML service will run at:
+
+```text
+http://127.0.0.1:5000
+```
+
+Health check:
+
+```text
+GET http://127.0.0.1:5000/health
+```
+
+**Important:** Keep both the Laravel API and Flask ML service running when using the property price estimator.
+
+## API Endpoints
+
+Base URL:
+
+```text
+http://127.0.0.1:8000/api
+```
+
+### Public Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/properties` | Retrieve available properties |
+| GET | `/properties/{id}` | Retrieve property details |
+| GET | `/properties/compare?ids=42,44,45` | Compare properties |
+| GET | `/locations` | Retrieve available locations |
+| GET | `/property-types` | Retrieve property types |
+| POST | `/estimate` | Estimate property price |
+
+### Admin Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/admin/login` | Admin login |
+| GET | `/admin/me` | Retrieve authenticated admin |
+| GET | `/admin/properties` | Retrieve admin property listings |
+| POST | `/admin/properties` | Create a property |
+| GET | `/admin/properties/{id}` | Retrieve a property |
+| PUT | `/admin/properties/{id}` | Update a property |
+| DELETE | `/admin/properties/{id}` | Delete a property |
+
+Admin endpoints require a valid Laravel Sanctum Bearer token, except the login endpoint.
+
+## Property Price Estimator
+
+The estimator accepts four property inputs:
+
+- Bedrooms
+- Bathrooms
+- Floor Area
+- Land Area
+
+Example request:
+
+```http
+POST /api/estimate
+Content-Type: application/json
+```
+
+Request body:
+
+```json
+{
+  "bedrooms": 3,
+  "bathrooms": 2,
+  "floor_area": 90,
+  "land_area": 100
+}
+```
+
+Example response:
+
+```json
+{
+  "estimated_price": 6135000
+}
+```
+
+The Laravel API sends the validated inputs to the Flask service. The Flask service uses the trained `phil_price_model.pkl` model to generate the estimated price.
+
+**Note:** Price estimates are for guidance only and should not be treated as professional property appraisals.
+
+## Admin Login
+
+Seeded admin account for local development:
+
+```text
+Email: admin@dreamhome.test
+Password: password
+```
+
+Login endpoint:
+
+```text
+POST /api/admin/login
+```
+
+Use the returned token as a Bearer token when accessing protected admin endpoints.
+
+Do not use development credentials in production.
+
+## Testing
+
+The API can be tested using Postman.
+
+Recommended tests:
+
+- Retrieve property listings.
+- Retrieve property details.
+- Retrieve locations and property types.
+- Compare multiple properties.
+- Log in as admin.
+- Test admin property CRUD operations.
+- Submit property details to the price estimator.
+
+Make sure MySQL, Laravel, and Flask are running before testing the complete system.
+
+## Notes
+
+- Do not commit `.env` files or other sensitive credentials.
+- The trained model is stored in `ml-service/models/`.
+- The Laravel backend communicates with the Flask service through `ML_SERVICE_URL`.
+- Keep the Laravel API and Flask service running simultaneously for price estimation.
